@@ -1,10 +1,10 @@
 {
-  "name": "jgauthi/poc_symfony5_webpack_bootstrap",
+  "name": "jgauthi/poc_symfony_webpack_bootstrap",
   "description": "POC for use webpack + bootstrap in symfony",
   "type": "project",
   "license": "GPL-3.0-only",
   "require": {
-    "php": ">=8.2",
+    "php": ">=8.4",
     "ext-ctype": "*",
     "ext-iconv": "*",
     "ext-simplexml": "*",
@@ -33,11 +33,11 @@
     "symfony/twig-bundle": "*",
     "symfony/validator": "*",
     "symfony/web-link": "*",
-    "symfony/webpack-encore-bundle": "^1.12 || ^2.0",
+    "symfony/webpack-encore-bundle": "2.*",
     "symfony/yaml": "*",
     "twig/extra-bundle": "^3.0",
     "twig/twig": "^3.0",
-    "vich/uploader-bundle": "^2.0"
+    "vich/uploader-bundle": "*"
   },
   "require-dev": {
     "doctrine/doctrine-fixtures-bundle": "*",

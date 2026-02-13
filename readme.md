@@ -1,7 +1,7 @@
-# POC Symfony 5
+# POC Symfony
 ## Prerequisites
 
-* The PHP version must be greater than or equal to PHP 8.0
+* The PHP version must be greater than or equal to PHP 8.4
 * The SQLite 3 extension must be enabled
 * The JSON extension must be enabled
 * The Ctype extension must be enabled
@@ -34,9 +34,9 @@ php bin/console doctrine:migrations:migrate -n
 php bin/console doctrine:fixtures:load -n
 
 # Installation Assets
-yarn install
-run yarn encore dev
-#yarn encore production # for production
+npm install
+npm run dev
+#npm run build # for production
 ```
 
 For the asset symlink install, launch a terminal on administrator in windows environment.

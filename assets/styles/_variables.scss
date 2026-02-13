@@ -42,7 +42,8 @@ $theme-colors: (
   "cyan": $cyan,
 );
 
-$yiq-contrasted-threshold: 190;
+// Bootstrap 5: replaces $yiq-contrasted-threshold
+$min-contrast-ratio: 3;
 
 $text-muted: #999;
 
@@ -105,7 +106,7 @@ $table-border-color: rgba(0, 0, 0, 0.1);
 $input-border-color: rgba(0, 0, 0, .1);
 $input-group-addon-bg: $gray-200;
 $btn-font-weight: $font-weight-bold;
-$custom-control-indicator-size: 1.3rem;
+$form-check-input-width: 1.3em;
 
 // Tooltips
 

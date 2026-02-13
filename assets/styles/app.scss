@@ -12,13 +12,6 @@ main {
   flex: 1;
 }
 
-// Darken buttons
-@each $color, $value in $theme-colors {
-  .btn-#{$color} {
-    @include button-variant($value, $value, darken($value, 10%));
-  }
-}
-
 .navbar-brand {
   font-family: $font-family-title;
   font-weight: $font-weight-normal;

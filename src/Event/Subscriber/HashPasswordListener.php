@@ -2,15 +2,18 @@
 namespace App\Event\Subscriber;
 
 use App\Entity\User;
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
- * Encode password before insert/update on database (Doctrine Event Subscriber).
+ * Encode password before insert/update on database (Doctrine Event Listener).
  */
-class HashPasswordListener implements EventSubscriber
+#[AsDoctrineListener(event: Events::prePersist)]
+#[AsDoctrineListener(event: Events::preUpdate)]
+class HashPasswordListener
 {
     public function __construct(private UserPasswordHasherInterface $hasher)
     {
@@ -27,38 +30,23 @@ class HashPasswordListener implements EventSubscriber
         $user->setPassword($hashed);
     }
 
-    /**
-     * Returns an array of events this subscriber wants to listen to.
-     *
-     * @return string[]
-     */
-    public function getSubscribedEvents(): array
+    public function prePersist(PrePersistEventArgs $args): void
     {
-        return [
-            Events::prePersist,
-            Events::preUpdate,
-        ];
-    }
-
-    public function prePersist(LifecycleEventArgs $args): void
-    {
-        /** @var User $user */
-        $user = $args->getEntity();
-        if (!$user instanceof User) {
+        $entity = $args->getObject();
+        if (!$entity instanceof User) {
             return;
         }
 
-        $this->encodePassword($user);
+        $this->encodePassword($entity);
     }
 
-    public function preUpdate(LifecycleEventArgs $args): void
+    public function preUpdate(PreUpdateEventArgs $args): void
     {
-        /** @var User $user */
-        $user = $args->getEntity();
-        if (!$user instanceof User) {
+        $entity = $args->getObject();
+        if (!$entity instanceof User) {
             return;
         }
 
-        $this->encodePassword($user);
+        $this->encodePassword($entity);
     }
 }

@@ -1,32 +1,35 @@
 <?php
 namespace App\Entity;
 
+use App\Repository\DossierRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: \App\Repository\DossierRepository::class)]
+#[ORM\Entity(repositoryClass: DossierRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Dossier
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     private string $title;
 
     #[ORM\Column]
     private \DateTimeImmutable $createdDate;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column]
     private bool $active;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: Types::TEXT)]
     private string $content;
 
     #[ORM\ManyToOne(inversedBy: 'dossier'), ORM\JoinColumn(nullable: false)]
     private Client $client;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Category', mappedBy: 'dossier')]
+    /** @var Collection<int, Category> */
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'dossier')]
     private Collection $categories;
 
     #[ORM\ManyToOne(inversedBy: 'dossiers'), ORM\JoinColumn(nullable: false)]
@@ -34,8 +37,8 @@ class Dossier
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection;
-        $this->createdDate = new \DateTimeImmutable;
+        $this->categories = new ArrayCollection();
+        $this->createdDate = new \DateTimeImmutable();
     }
 
     public function __toString(): string
@@ -60,7 +63,7 @@ class Dossier
         return $this;
     }
 
-    public function getCreatedDate(): \DateTimeInterface
+    public function getCreatedDate(): \DateTimeImmutable
     {
         return $this->createdDate;
     }
@@ -68,7 +71,7 @@ class Dossier
     #[ORM\PrePersist]
     public function setCreatedDate(): self
     {
-        $this->createdDate = new \DateTimeImmutable;
+        $this->createdDate = new \DateTimeImmutable();
 
         return $this;
     }
@@ -113,9 +116,7 @@ class Dossier
         return $this;
     }
 
-    /**
-     * @return Collection|Category[]
-     */
+    /** @return Collection<int, Category> */
     public function getCategories(): Collection
     {
         return $this->categories;

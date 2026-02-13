@@ -1,13 +1,15 @@
 <?php
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\{PasswordAuthenticatedUserInterface, UserInterface};
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class),
+#[ORM\Entity(repositoryClass: UserRepository::class),
     UniqueEntity('username', errorPath: 'username'),
     UniqueEntity('email')
 ]
@@ -20,14 +22,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public const DEFAULT_ROLES = [self::ROLE_COMMENTATOR];
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     #[Assert\Length(min: 6, max: 255), Assert\NotBlank]
     private string $username;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     #[Assert\Regex(
         pattern: '#(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}#',
         message: 'Password must be 7 characters long and contain at least one digit, one uppercase letter and one lower case letter.'
@@ -41,27 +43,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private ?string $plainPassword = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     #[Assert\Length(min: 6, max: 255), Assert\NotBlank]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     #[Assert\Email, Assert\Length(min: 6, max: 255), Assert\NotBlank]
     private string $email;
 
-    #[ORM\Column(type: 'simple_array')]
+    #[ORM\Column(type: Types::SIMPLE_ARRAY)]
     private array $roles;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column]
     private bool $enabled = false;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Dossier', mappedBy: 'author', orphanRemoval: true)]
+    /** @var Collection<int, Dossier> */
+    #[ORM\OneToMany(targetEntity: Dossier::class, mappedBy: 'author', orphanRemoval: true)]
     private Collection $dossiers;
 
     public function __construct()
     {
         $this->roles = self::DEFAULT_ROLES;
-        $this->dossiers = new ArrayCollection;
+        $this->dossiers = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -153,7 +156,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
-        // TODO: Implement eraseCredentials() method.
     }
 
     public function isEnabled(): bool
@@ -168,9 +170,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Dossier[]
-     */
+    /** @return Collection<int, Dossier> */
     public function getDossiers(): Collection
     {
         return $this->dossiers;

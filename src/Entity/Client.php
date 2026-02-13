@@ -1,33 +1,35 @@
 <?php
 namespace App\Entity;
 
+use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: \App\Repository\ClientRepository::class)]
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $address;
 
-    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $city;
 
-    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $country;
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Dossier', mappedBy: 'client', orphanRemoval: true)]
+    /** @var Collection<int, Dossier> */
+    #[ORM\OneToMany(targetEntity: Dossier::class, mappedBy: 'client', orphanRemoval: true)]
     private Collection $dossier;
 
     public function __construct()
     {
-        $this->dossier = new ArrayCollection;
+        $this->dossier = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -88,9 +90,7 @@ class Client
         return $this;
     }
 
-    /**
-     * @return Collection|Dossier[]
-     */
+    /** @return Collection<int, Dossier> */
     public function getDossier(): Collection
     {
         return $this->dossier;

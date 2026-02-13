@@ -4,6 +4,9 @@ doctrine:
 
   orm:
     auto_generate_proxy_classes: true
+    enable_native_lazy_objects: true
+    controller_resolver:
+      auto_mapping: false
     auto_mapping: true
     mappings:
       App:
@@ -11,3 +14,22 @@ doctrine:
         dir: '%kernel.project_dir%/src/Entity'
         prefix: 'App\Entity'
         alias: App
+
+when@prod:
+  doctrine:
+    orm:
+      auto_generate_proxy_classes: false
+
+  framework:
+    cache:
+      pools:
+        doctrine.result_cache_pool:
+          adapter: cache.app
+        doctrine.system_cache_pool:
+          adapter: cache.system
+
+when@test:
+  doctrine:
+    dbal:
+      # "TEST_TOKEN" is typically set by ParaTest
+      dbname_suffix: '_test%env(default::TEST_TOKEN)%'

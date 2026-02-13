@@ -1,39 +1,39 @@
 <?php
 namespace App\Entity;
 
-use DateTime;
-use DateTimeInterface;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
-#[ORM\Entity(repositoryClass: \App\Repository\CategoryRepository::class)]
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[Vich\Uploadable]
 class Category
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(length: 100)]
     private string $title;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     private string $image = '';
 
     #[Vich\UploadableField(mapping: 'category_images', fileNameProperty: 'image')]
     public ?File $file = null;
 
     #[ORM\Column(nullable: true)]
-    private ?DateTime $updatedAt;
+    private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToMany(targetEntity: 'App\Entity\Dossier', inversedBy: 'categories')]
+    /** @var Collection<int, Dossier> */
+    #[ORM\ManyToMany(targetEntity: Dossier::class, inversedBy: 'categories')]
     private Collection $dossier;
 
     public function __construct()
     {
-        $this->dossier = new ArrayCollection;
+        $this->dossier = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -82,9 +82,7 @@ class Category
         return $this->file;
     }
 
-    /**
-     * @return Collection|Dossier[]
-     */
+    /** @return Collection<int, Dossier> */
     public function getDossier(): Collection
     {
         return $this->dossier;
@@ -108,7 +106,7 @@ class Category
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTime
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -116,7 +114,7 @@ class Category
     #[ORM\PreUpdate]
     public function setUpdatedAt(): self
     {
-        $this->updatedAt = new DateTime;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }

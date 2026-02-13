@@ -1,8 +1,6 @@
 <?php
 namespace App\Entity;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,8 +14,8 @@ class Dossier
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    #[ORM\Column(type: 'datetime')]
-    private DateTimeInterface $createdDate;
+    #[ORM\Column]
+    private \DateTimeImmutable $createdDate;
 
     #[ORM\Column(type: 'boolean')]
     private bool $active;
@@ -25,18 +23,19 @@ class Dossier
     #[ORM\Column(type: 'text')]
     private string $content;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Client', inversedBy: 'dossier'), ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'dossier'), ORM\JoinColumn(nullable: false)]
     private Client $client;
 
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Category', mappedBy: 'dossier')]
     private Collection $categories;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'dossiers'), ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'dossiers'), ORM\JoinColumn(nullable: false)]
     private User $author;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection;
+        $this->createdDate = new \DateTimeImmutable;
     }
 
     public function __toString(): string
@@ -61,7 +60,7 @@ class Dossier
         return $this;
     }
 
-    public function getCreatedDate(): DateTimeInterface
+    public function getCreatedDate(): \DateTimeInterface
     {
         return $this->createdDate;
     }
@@ -69,7 +68,7 @@ class Dossier
     #[ORM\PrePersist]
     public function setCreatedDate(): self
     {
-        $this->createdDate = new DateTimeImmutable;
+        $this->createdDate = new \DateTimeImmutable;
 
         return $this;
     }

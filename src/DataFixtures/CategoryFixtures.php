@@ -2,6 +2,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+use App\Entity\Dossier;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -46,7 +47,7 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
                 }
 
                 $alreadyUse[] = $randomDossier;
-                $category->addDossier($this->getReference("dossier_{$randomDossier}")); // @phpstan-ignore-line
+                $category->addDossier($this->getReference("dossier_{$randomDossier}", Dossier::class));
             }
 
             $manager->persist($category);

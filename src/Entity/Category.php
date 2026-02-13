@@ -25,8 +25,8 @@ class Category
     #[Vich\UploadableField(mapping: 'category_images', fileNameProperty: 'image')]
     public ?File $file = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTimeInterface $updatedAt;
+    #[ORM\Column(nullable: true)]
+    private ?DateTime $updatedAt;
 
     #[ORM\ManyToMany(targetEntity: 'App\Entity\Dossier', inversedBy: 'categories')]
     private Collection $dossier;
@@ -108,7 +108,7 @@ class Category
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }

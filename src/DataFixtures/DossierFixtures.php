@@ -1,7 +1,9 @@
 <?php
 namespace App\DataFixtures;
 
+use App\Entity\Client;
 use App\Entity\Dossier;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -26,10 +28,10 @@ class DossierFixtures extends Fixture implements DependentFixtureInterface
             $dossier->setTitle(ucfirst(implode(' ', (array) $this->faker->unique()->words(rand(2, 4)))))
                 ->setContent($this->faker->text)
                 ->setActive($this->faker->boolean(70))
-                ->setClient($this->getReference("client_{$randomClient}")); // @phpstan-ignore-line
+                ->setClient($this->getReference("client_{$randomClient}", Client::class));
 
             $randomUsername = array_rand(UserFixtures::USERS, 1);
-            $dossier->setAuthor($this->getReference("user_{$randomUsername}")); // @phpstan-ignore-line
+            $dossier->setAuthor($this->getReference("user_{$randomUsername}", User::class));
 
             $manager->persist($dossier);
             $this->setReference("dossier_$i", $dossier);

@@ -25,7 +25,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('POC Symfony Webpack Bootstrap');
+            ->setTitle('POC Symfony Typescript');
     }
 
     public function configureMenuItems(): iterable

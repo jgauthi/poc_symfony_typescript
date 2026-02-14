@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% if title is not empty %}{{ title }} - {% endif %}Poc Symfony Webpack Bootstrap{% endblock %}</title>
     {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
+            {{ vite_entry_link_tags('app') }}
+        {{ vite_entry_link_tags('app') }}
     {% endblock %}
 </head>
 <body class="{{ class_body|default('d-flex flex-column h-100') }}">
@@ -45,7 +46,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
+            {{ vite_entry_script_tags('app') }}
+    {{ vite_entry_script_tags('app') }}
 {% endblock %}
 </body>
 </html>

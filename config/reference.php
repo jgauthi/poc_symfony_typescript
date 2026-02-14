@@ -472,7 +472,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     },
  *     disallow_search_engine_index?: bool|Param, // Enabled by default when debug is enabled. // Default: true
  *     http_client?: bool|array{ // HTTP Client configuration
- *         enabled?: bool|Param, // Default: false
+ *         enabled?: bool|Param, // Default: true
  *         max_host_connections?: int|Param, // The maximum number of connections to a single host.
  *         default_options?: array{
  *             headers?: array<string, mixed>,
@@ -1582,16 +1582,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     convert_exception?: bool|Param, // Default: false
  *     remove_first_page_param?: bool|Param, // Default: false
  * }
- * @psalm-type WebpackEncoreConfig = array{
- *     output_path: scalar|Param|null, // The path where Encore is building the assets - i.e. Encore.setOutputPath()
- *     crossorigin?: false|"anonymous"|"use-credentials"|Param, // crossorigin value when Encore.enableIntegrityHashes() is used, can be false (default), anonymous or use-credentials // Default: false
- *     preload?: bool|Param, // preload all rendered script and link tags automatically via the http2 Link header. // Default: false
- *     cache?: bool|Param, // Enable caching of the entry point file(s) // Default: false
- *     strict_mode?: bool|Param, // Throw an exception if the entrypoints.json file is missing or an entry is missing from the data // Default: true
- *     builds?: array<string, scalar|Param|null>,
- *     script_attributes?: array<string, scalar|Param|null>,
- *     link_attributes?: array<string, scalar|Param|null>,
- * }
  * @psalm-type TwigComponentConfig = array{
  *     defaults?: array<string, string|array{ // Default: ["__deprecated__use_old_naming_behavior"]
  *         template_directory?: scalar|Param|null, // Default: "components"
@@ -1603,6 +1593,38 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         collect_components?: bool|Param, // Collect components instances // Default: true
  *     },
  *     controllers_json?: scalar|Param|null, // Deprecated: The "twig_component.controllers_json" config option is deprecated, and will be removed in 3.0. // Default: null
+ * }
+ * @psalm-type PentatrionViteConfig = array{
+ *     public_directory?: scalar|Param|null, // Default: "public"
+ *     build_directory?: scalar|Param|null, // we only need build_directory to locate entrypoints.json file, it's the "base" vite config parameter without slashes. // Default: "build"
+ *     proxy_origin?: scalar|Param|null, // Allows to use different origin for asset proxy, eg. http://host.docker.internal:5173 // Default: null
+ *     absolute_url?: bool|Param, // Prepend the rendered link and script tags with an absolute URL. // Default: false
+ *     throw_on_missing_entry?: scalar|Param|null, // Throw exception when entry is not present in the entrypoints file // Default: false
+ *     throw_on_missing_asset?: scalar|Param|null, // Throw exception when asset is not present in the manifest file // Default: true
+ *     cache?: bool|Param, // Enable caching of the entry point file(s) // Default: false
+ *     preload?: "none"|"link-tag"|"link-header"|Param, // preload all rendered script and link tags automatically via the http2 Link header. (symfony/web-link is required) Instead <link rel="modulepreload"> will be used. // Default: "link-tag"
+ *     crossorigin?: false|true|"anonymous"|"use-credentials"|Param, // crossorigin value, can be false, true (default), anonymous (same as true) or use-credentials // Default: true
+ *     script_attributes?: list<scalar|Param|null>,
+ *     link_attributes?: list<scalar|Param|null>,
+ *     preload_attributes?: list<scalar|Param|null>,
+ *     default_build?: scalar|Param|null, // Deprecated: The "default_build" option is deprecated. Use "default_config" instead. // Default: null
+ *     builds?: array<string, array{ // Default: []
+ *         build_directory?: scalar|Param|null, // Default: "build"
+ *         script_attributes?: list<scalar|Param|null>,
+ *         link_attributes?: list<scalar|Param|null>,
+ *         preload_attributes?: list<scalar|Param|null>,
+ *     }>,
+ *     default_config?: scalar|Param|null, // Default: null
+ *     configs?: array<string, array{ // Default: []
+ *         build_directory?: scalar|Param|null, // Default: "build"
+ *         script_attributes?: list<scalar|Param|null>,
+ *         link_attributes?: list<scalar|Param|null>,
+ *         preload_attributes?: list<scalar|Param|null>,
+ *     }>,
+ * }
+ * @psalm-type StimulusConfig = array{
+ *     controller_paths?: list<scalar|Param|null>,
+ *     controllers_json?: scalar|Param|null, // Default: "%kernel.project_dir%/assets/controllers.json"
  * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
@@ -1617,8 +1639,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     monolog?: MonologConfig,
  *     vich_uploader?: VichUploaderConfig,
  *     knp_paginator?: KnpPaginatorConfig,
- *     webpack_encore?: WebpackEncoreConfig,
  *     twig_component?: TwigComponentConfig,
+ *     pentatrion_vite?: PentatrionViteConfig,
+ *     stimulus?: StimulusConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1635,8 +1658,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         maker?: MakerConfig,
  *         vich_uploader?: VichUploaderConfig,
  *         knp_paginator?: KnpPaginatorConfig,
- *         webpack_encore?: WebpackEncoreConfig,
  *         twig_component?: TwigComponentConfig,
+ *         pentatrion_vite?: PentatrionViteConfig,
+ *         stimulus?: StimulusConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1651,8 +1675,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         monolog?: MonologConfig,
  *         vich_uploader?: VichUploaderConfig,
  *         knp_paginator?: KnpPaginatorConfig,
- *         webpack_encore?: WebpackEncoreConfig,
  *         twig_component?: TwigComponentConfig,
+ *         pentatrion_vite?: PentatrionViteConfig,
+ *         stimulus?: StimulusConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1668,8 +1693,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         monolog?: MonologConfig,
  *         vich_uploader?: VichUploaderConfig,
  *         knp_paginator?: KnpPaginatorConfig,
- *         webpack_encore?: WebpackEncoreConfig,
  *         twig_component?: TwigComponentConfig,
+ *         pentatrion_vite?: PentatrionViteConfig,
+ *         stimulus?: StimulusConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

@@ -8,14 +8,14 @@
 * The date.timezone parameter must be defined in php.ini
 * Yarn command line
 
-More information on [symfony website](https://symfony.com/doc/5.2/reference/requirements.html).
+More information on [symfony website](https://symfony.com/doc/7.4/reference/requirements.html).
 
 ## Features developed
-[Webpack Encore](https://symfony.com/doc/5.2/frontend.html) is a simpler way to integrate Webpack into your application. It wraps Webpack, giving you a clean & powerful API for bundling JavaScript modules, pre-processing CSS & JS and compiling and minifying assets. Encore gives you professional asset system that’s a delight to use.
+[Symfony Vite](https://symfony-vite.pentatrion.com) is a tool to facilitate the development experience of modern web projects. It provides: a development server which allows, among other things, Hot Module Replacement 🔥 of generated code by taking advantage of ES modules, a build command which uses Rollup.
 
-Encore is inspired by Webpacker and Mix, but stays in the spirit of Webpack: using its features, concepts and naming conventions for a familiar feel. It aims to solve the most common Webpack use cases.
+[TypeScript](https://www.typescriptlang.org) is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.
 
-In [master branch](https://github.com/jgauthi/poc_symfony5_webpack_bootstrap), this script use Javascript on assets folder. You can switch on [typescript branch](https://github.com/jgauthi/poc_symfony5_webpack_bootstrap/tree/typescript) for this alternative language.
+You can look at previous releases v1.3 for [Webpack encore version](https://github.com/jgauthi/poc_symfony_typescript/tree/v1.3).
 
 
 ## Installation

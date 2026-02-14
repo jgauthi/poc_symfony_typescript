@@ -18,7 +18,7 @@ More information on [symfony website](https://symfony.com/doc/7.4/reference/requ
 You can look at previous releases v1.3 for [Webpack encore version](https://github.com/jgauthi/poc_symfony_typescript/tree/v1.3).
 
 
-## Installation
+## Installation (local dev)
 Command lines:
 
 ```bash
@@ -55,3 +55,13 @@ APP_ENV=test php -d variables_order=EGPCS -S 127.0.0.1:8000 -t public/
 Alternatively, you can [configure a web server](https://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html) like Nginx or Apache to run the application.
 
 Your commit is checked by several dev tools (like phpstan, php cs fixer...). These tools were managed by [Grumphp](https://github.com/phpro/grumphp), you can edit configuration on file [grumphp.yml](./grumphp.yml) or check manually with the command: `./vendor/bin/grumphp run`.
+
+
+## Production
+You can build a prod version (mono binary execution file) with FrankenPHP (docker required):
+
+```shell
+bash bin/build_prod.sh linux
+# OR
+bash bin/build_prod.sh windows
+```

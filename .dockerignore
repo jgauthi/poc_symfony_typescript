@@ -1,0 +1,18 @@
+# Exclude file/folder for docker COPY and BUILD command
+
+# Sources files
+assets/
+tests/
+
+# Local dependencies
+node_modules/
+vendor/
+
+# Local build, caches, logs, configuration
+var/
+public/build/
+.env.*
+
+# Docker
+.docker/
+bin/build*.sh

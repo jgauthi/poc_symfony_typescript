@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}{% if title is not empty %}{{ title }} - {% endif %}Poc Symfony Webpack Bootstrap{% endblock %}</title>
+    <title>{% block title %}{% if title is not empty %}{{ title }} - {% endif %}Poc Symfony ViteJS Bootstrap{% endblock %}</title>
     {% block stylesheets %}
-            {{ vite_entry_link_tags('app') }}
         {{ vite_entry_link_tags('app') }}
     {% endblock %}
 </head>
@@ -46,7 +45,6 @@
 {% endblock %}
 
 {% block javascripts %}
-            {{ vite_entry_script_tags('app') }}
     {{ vite_entry_script_tags('app') }}
 {% endblock %}
 </body>

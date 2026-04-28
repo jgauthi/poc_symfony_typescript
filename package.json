@@ -6,10 +6,10 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "sass": "^1.97.3",
-        "typescript": "^5.9.3",
-        "vite": "^6.4.1",
-        "vite-plugin-symfony": "^8.2"
+        "sass": "^1.99.0",
+        "typescript": "^6.0.3",
+        "vite": "^8",
+        "vite-plugin-symfony": "^8.2.4"
     },
     "dependencies": {
         "@hotwired/stimulus": "^3.2.2",
